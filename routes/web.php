@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', function () {
     return view('anonymous');
@@ -36,3 +37,4 @@ Route::get('/home', function () {
 })->name('home');
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/signup', [RegisterController::class, 'register']);

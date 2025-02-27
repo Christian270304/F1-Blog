@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tokens', function (Blueprint $table) {
             $table->increments('id');
-            $table->Integer('user_id', 11);
+            $table->unsignedInteger('user_id');
             $table->string('token', 255)->unique();
             $table->dateTime('expira');
         });
