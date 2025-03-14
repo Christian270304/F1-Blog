@@ -3,8 +3,8 @@
 use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\RegisterController;
+// use App\Http\Controllers\Auth\RegisterController;
+// use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', function () {
     return view('anonymous');
@@ -12,7 +12,7 @@ Route::get('/', function () {
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
-Route::get('/signup', [RegisterController::class, 'showRegisterForm'])->name('signup');
+// Route::get('/signup', [RegisterController::class, 'showRegisterForm'])->name('signup');
 
 Route::get('/articles', [ArticleController::class, 'showArticles'])->name('articles');
 
@@ -37,6 +37,6 @@ Route::get('/home', function () {
 // Route::get('/readQR', [QRController::class, 'showQRForm'])->name('readQR');
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
-Route::post('/signup', [RegisterController::class, 'register']);
+// Route::post('/signup', [RegisterController::class, 'register']);
 
 ?>
