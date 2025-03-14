@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrar Usuarios</title>
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href=" {{ asset('css/admin.css') }}">
 </head>
 
 <body>
@@ -23,11 +23,11 @@
             </nav>
             <div class="user-icon">
                 <label for="dropdown">
-                    <?php
+                    {{-- <?php
                     // PHP: Comprobar si el usuario ya tiene una imagen guardada
-                    $profileImage = (!empty(isset($_SESSION['profile_image']))) ? $_SESSION['profile_image'] : $defaultImage;
-                    ?>
-                    <img src="<?php echo $profileImage; ?>" alt="Foto de perfil" id="userIcon">
+                    //$profileImage = (!empty(isset($_SESSION['profile_image']))) ? $_SESSION['profile_image'] : $defaultImage;
+                    ?> --}}
+                    {{-- <img src="<?php echo $profileImage; ?>" alt="Foto de perfil" id="userIcon"> --}}
                 </label>
                 <input hidden class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
                 <div class="section-dropdown">
@@ -55,18 +55,18 @@
                         </thead>
                         <tbody>
                         <?php
-                    require_once 'Model/Usuarios.php'; // Incluir el modelo que maneja los usuarios
+                    //require_once 'Model/Usuarios.php'; // Incluir el modelo que maneja los usuarios
 
                     // Obtener la lista de usuarios
-                    $usuarios = obtenerUsuarios(); // Asegúrate de tener esta función en tu modelo
+                    // $usuarios = obtenerUsuarios(); // Asegúrate de tener esta función en tu modelo
 
-                    foreach ($usuarios as $usuario) {
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($usuario['username']) . "</td>";
-                        echo "<td>" . htmlspecialchars($usuario['email']) . "</td>";
-                        echo "<td><a href='#' onclick='openDeleteModal(" . htmlspecialchars($usuario['id']) . ")'>Eliminar</a></td>";
-                        echo "</tr>";
-                    }
+                    // foreach ($usuarios as $usuario) {
+                    //     echo "<tr>";
+                    //     echo "<td>" . htmlspecialchars($usuario['username']) . "</td>";
+                    //     echo "<td>" . htmlspecialchars($usuario['email']) . "</td>";
+                    //     echo "<td><a href='#' onclick='openDeleteModal(" . htmlspecialchars($usuario['id']) . ")'>Eliminar</a></td>";
+                    //     echo "</tr>";
+                    // }
                     ?>
                         </tbody>
                     </table>
@@ -82,7 +82,7 @@
                                 <span class="close" id="closeModal">&times;</span>
                                 <h2>Confirmar Eliminación</h2>
                             </div>
-                            <p>¿Desea eliminar este usuario? <input type="text" readonly value="<?php echo htmlspecialchars($usuario['username'])?>"></p>
+                            {{-- <p>¿Desea eliminar este usuario? <input type="text" readonly value="<?php echo htmlspecialchars($usuario['username'])?>"></p> --}}
                             <p>¿También desea eliminar todos los artículos asociados?</p>
                             <form id="deleteForm" method="POST" action="index.php?pagina=EliminarUsuario">
                                 <input type="hidden" name="user_id" id="user_id" value="">
