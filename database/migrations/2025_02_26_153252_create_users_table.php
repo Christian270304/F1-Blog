@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->text('bio')->nullable();
             $table->string('image', 255)->nullable();
-            $table->boolean('OAuth')->nullable();
+            $table->boolean('OAuth')->default(false);
             $table->timestamp('creado_el');
         });
     }

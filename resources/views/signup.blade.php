@@ -60,12 +60,15 @@
                 </svg>
                 <input class="input-field" autocomplete="off" placeholder="Repeteix la contrasenya" name="password_confirmation" type="password" value="{{old('password_confirmation')}}">
             </div>
+                @error('confirm_password')
+                    <span class="error">{{ $message }}</span>
+                @enderror
             
 
             <button class="btn" type="submit">Crear</button>
 
             <a class="g_id_signin" href="">
-                <img src="{{ asset('assets/google.png') }}" alt="Google Logo" class="google-logo" width="20" height="20"> <!-- Logo opcional -->
+                <img src="{{ asset('assets/google.png') }}" alt="Google Logo" class="google-logo" width="20" height="20"> 
                 Iniciar sesión con Google</a>
 
 
@@ -74,6 +77,7 @@
                 Iniciar sesión con GitHub</a>
 
 
+            <a href="{{ route('login') }}" class="btn-link">Tengo una cuenta</a>
             <a href="{{ route('login') }}" class="btn-link">Tengo una cuenta</a>
         </form>
     </div>
