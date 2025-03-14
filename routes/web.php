@@ -37,3 +37,5 @@ Route::get('/home', function () {
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/signup', [RegisterController::class, 'register']);
+
+?>
