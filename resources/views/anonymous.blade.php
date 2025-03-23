@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href=" {{ asset('css/anonymous.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>Inici</title>
 </head>
 
 <body>
     <div class="container">
-    <form method="get" action="">
+
         <div class="header">
             <div class="logo">
                 <a href="{{ route('anonymous') }}">
@@ -22,12 +23,10 @@
                 <input placeholder="Search..." type="text" />
             </div>
             <div class="articles-per-page">
-            <label for="articulosPorPagina">Artículos por página:</label>
-                
-                <input type="hidden" name="page" >
-                <input type="hidden" name="pagina" >
-                <input type="number" name="articulosPorPagina" id="articulosPorPagina" min="1" max="12">
-                <button type="submit">Actualizar</button>
+                <label for="articulosPorPagina">Artículos por página:</label>
+                <form action="{{ route('anonymous') }}" method="GET" id="paginationForm">
+                    <input type="number" name="perPage" id="articulosPorPagina" min="1" max="{{ $articles->total() }}" value="{{ request('perPage', 5) }}" onchange="document.getElementById('paginationForm').submit();">
+                </form>
             </div>
             <div class="sort-buttons">
 
@@ -38,26 +37,34 @@
                 </label>
                 <input hidden class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
                 <div class="section-dropdown">
-                        <a href="{{ route('admin') }}">Admin <i class="uil uil-arrow-right"></i></a>
                         <a href="{{ route('login') }}">Iniciar Sessió <i class="uil uil-arrow-right"></i></a>
                         <a href="{{ route('signup') }}">Crear Compte <i class="uil uil-arrow-right"></i></a>
                 </div>
             </div>
         </div>
-        <div class="content" id="articlesContainer">
-        
-                
+        <div class="content">
+            @foreach ($articles as $article)
+                <div class="card" id="{{ $article->id }}">
+                    <img class="img-article" src="{{ asset('storage/' . $article->image) }}" alt="Imatge Article">
+                    <div class="article-content">
+                        <h4 class="titulo">{{ $article->titol }}</h4>
+                        <p class="texto">{!! $article->cos !!}</p>
+                        <span id="username" class="username"><i class="fa fa-user"></i> {{ $article->user->username }}</span>
+                    </div>
+                </div>
+            @endforeach
             
-
-            {{-- <?php
-            // Obtener la página actual de la URL, por defecto es 1
-            // $paginaActual = validarEntero('page', 1, 1, ceil($totalArticulos / 1));
-            // $articulosPorPagina = validarEntero('articulosPorPagina', 5, 1, $totalArticulos); // Número de artículos por página
-
-            // echo mostrarTodosArticulos('MostrarInici', $paginaActual, $articulosPorPagina);  // Usar el valor de artículos por página
-            ?> --}}
         </div>
-        </form>
+        <div class="pagination">
+            {{$articles->links()}} 
+            {{-- @if ($page > 1)
+                <a href="{{ route('articles', ['page' => $page - 1]) }}">Anterior</a>
+            @endif
+            @if ($page < $totalPages)
+                <a href="{{ route('articles', ['page' => $page + 1]) }}">Següent</a>
+            @endif --}}
+        </div>
+ 
     </div>
 
     <script>

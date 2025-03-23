@@ -3,40 +3,85 @@
 use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-// use App\Http\Controllers\Auth\RegisterController;
-// use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\QRController;
+use App\Http\Controllers\UserController;
 
-Route::get('/', function () {
-    return view('anonymous');
-})->name('anonymous');
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ConfirmPasswordController;
+
+// Mostrar el formulario para solicitar el restablecimiento de contraseña
+Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+
+// Enviar el correo de restablecimiento de contraseña
+Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// Mostrar el formulario para restablecer la contraseña
+Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+
+// Procesar el restablecimiento de contraseña
+Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+// Confirmar la contraseña antes de realizar acciones sensibles
+Route::get('/password/confirm', [ConfirmPasswordController::class, 'showConfirmForm'])->name('password.confirm');
+Route::post('/password/confirm', [ConfirmPasswordController::class, 'confirm']);
+
+
+
+Route::get('/', [ArticleController::class, 'showAnonymous'])->name('anonymous');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
-// Route::get('/signup', [RegisterController::class, 'showRegisterForm'])->name('signup');
+Route::get('/signup', [RegisterController::class, 'showRegisterForm'])->name('signup');
 
-Route::get('/articles', [ArticleController::class, 'showArticles'])->name('articles');
+Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/myArticles', [ArticleController::class, 'showMyArticles'])->name('myArticles');
+Route::post('/signup', [RegisterController::class, 'register']);
 
-Route::get('/admin', function () {
-    return view('admin');
-})->name('admin');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/profile', function () {
-    return view('profile');
-})->name('profile');
+Route::middleware('auth')->group(function () {
 
-Route::get('/newArticle', function () {
-    return view('newArticle');
-})->name('newArticle');
+    Route::get('/articles', [ArticleController::class, 'showArticles'])->name('articles');
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
+    Route::get('/myArticles', [ArticleController::class, 'showMyArticles'])->name('myArticles');
 
-// Route::get('/readQR', [QRController::class, 'showQRForm'])->name('readQR');
+    Route::get('/admin', function () {
+        return view('admin');
+    })->name('admin');
 
-Route::post('/login', [LoginController::class, 'login'])->name('login');
-// Route::post('/signup', [RegisterController::class, 'register']);
+    Route::get('/profile', function () {
+        return view('profile');
+    })->name('profile');
 
+    Route::get('/newArticle', function () {
+        return view('newArticle');
+    })->name('newArticle');
+
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
+
+    Route::get('/readQR', [QRController::class, 'showQRForm'])->name('readQR');
+
+    Route::get('/edit/{id}', [ArticleController::class, 'editArticle'])->name('editArticle');
+
+    Route::get('/article/{id}', [ArticleController::class, 'getArticle'])->name('getArticle');
+
+    Route::post('/newArticle', [ArticleController::class, 'newArticle']);
+
+    Route::post('/updateProfile', [UserController::class, 'updateProfile'])->name('updateProfile');
+
+    Route::post('/updatePassword', [UserController::class, 'updatePassword'])->name('updatePassword');
+
+    Route::put('updateArticle/{id}', [ArticleController::class, 'updateArticle'])->name('updateArticle');
+});
 ?>
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

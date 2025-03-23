@@ -1,0 +1,671 @@
+/* Christian Torres Barrantes */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+
+    /* Custom Properties */
+    --rojo-intenso: #FF1E1E;
+    --negro-carbon: #1C1C1C;
+    --blanco-hielo: #F7F7F7;
+    --gris-metalico: #B0B0B0;
+    --amarillo-dorado: #FFC300;
+}
+.container {
+    display: grid;
+    min-height: 100vh;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+        'header'
+        'content';
+}
+.header {
+    grid-area: header;
+    background-color: var(--negro-carbon);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo {
+    width: 50px;
+    height: 50px;
+    background-color: var(--rojo-intenso);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    
+}
+.logo a {
+    text-decoration: none;
+    color: white;
+    border-radius: 40%;
+}
+.logo img {
+    width: 50px;
+    height: 50px;
+    border-radius: 40%;
+}
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: var(--blanco-hielo);
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--rojo-intenso);
+}
+.search-bar {
+    flex-grow: 0.5;
+    margin: 0 20px;
+}
+.search-bar input {
+    width: 50%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.articles-per-page {
+    display: flex;
+    align-items: center;
+}
+
+.articles-per-page label {
+    color: var(--blanco-hielo);
+    margin-right: 10px;
+}
+
+.articles-per-page input {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.sort-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.sort-buttons button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+}
+
+.sort-buttons button:hover {
+    background-color: #777;
+}
+.user-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.user-icon img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.user-icon input[type="checkbox"] {
+    display: none;
+}
+
+.section-dropdown {
+    position: absolute;
+    padding: 5px;
+    background-color: #111;
+    top: 70px;
+    right: 0;
+    width: 200px;
+    border-radius: 4px;
+    display: block;
+    box-shadow: 0 14px 35px 0 rgba(9,9,12,0.4);
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: all 200ms linear;
+}
+
+.user-icon input[type="checkbox"]:checked ~ .section-dropdown {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.section-dropdown:before {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    content: '';
+    display: block;
+    z-index: 1;
+}
+
+.section-dropdown:after {
+    position: absolute;
+    top: -7px;
+    right: 10px; /* Mueve el triángulo a la derecha */
+    width: 0; 
+    height: 0; 
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent; 
+    border-bottom: 8px solid #111;
+    content: '';
+    display: block;
+    z-index: 2;
+    transition: all 200ms linear;
+}
+
+.section-dropdown a {
+    position: relative;
+    color: #fff;
+    transition: all 200ms linear;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    border-radius: 2px;
+    padding: 5px 0;
+    padding-left: 20px;
+    padding-right: 15px;
+    margin: 2px 0;
+    text-align: left;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section-dropdown a:hover {
+    color: #102770;
+    background-color: #ffeba7;
+}
+
+.section-dropdown a .uil {
+    font-size: 22px;
+}
+  /* Fin barra de navegacion*/
+
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #c9d1d9;
+    font-size: 14px;
+}
+
+.form-group input:focus-visible, .form-group textarea:focus-visible {
+    outline: none;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: none;
+}
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #8b949e;
+}
+.profile-picture {
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+}
+.profile-picture img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
+.edit-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 55%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.profile-picture:hover .edit-button {
+    opacity: 1;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.profile-section .form-group {
+    flex: 1;
+    margin-right: 40px;
+}
+.profile-section .profile-picture {
+    margin-top: 0;
+}
+
+.edit-button i {
+    margin-right: 5px;
+}
+
+/* Oculta el input de archivo */
+#file-input {
+    display: none;
+}
+
+.content {
+  grid-area: content;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+#caja_mensaje.errors {
+    text-align: center;
+    background-color: red; 
+    color: #fff;
+    }
+  #caja_mensaje.mensaje {
+    text-align: center;
+    background-color: green; 
+    color: #fff;
+    }
+
+
+/* Estilos para el modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1000; /* En la parte superior */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: none; /* Scroll si es necesario */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+}
+
+.modal-content {
+    display: flex;
+    background-color: #1a1a2e;
+    margin: 5% auto; /* 15% desde la parte superior */
+    padding: 50px;
+    padding-right: 3.5%;
+    border: 1px solid #888;
+    width: 300px; /* Ancho del modal */
+    border-radius: 5px;
+    flex-direction: column;
+}
+
+
+
+.open {
+    padding: 10px 35px;
+    cursor: pointer;
+    background-color: #212121;
+    border-radius: 6px;
+    border: 2px solid #212121;
+    box-shadow: 6px 6px 10px rgba(0,0,0,1),
+    1px 1px 10px rgba(255, 255, 255, 0.6);
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.35s;
+}
+
+.open:hover {
+    transform: scale(1.05);
+    box-shadow: 6px 6px 10px rgba(0,0,0,1),
+    1px 1px 10px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 10px rgba(0,0,0,1),
+    inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+  }
+  
+  .open:focus {
+    transform: scale(1.05);
+    box-shadow: 6px 6px 10px rgba(0,0,0,1),
+    1px 1px 10px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 10px rgba(0,0,0,1),
+    inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+  }
+
+  /* Cambiar contraseña X */
+  .header-contra {
+    width: 322px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-contra h2 {
+    margin: 0;
+    font-size: 25px;
+  }
+  .header-contra .close {
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 30px;
+  }
+  
+  .close:hover,
+  .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+  }
+
+.btn {
+    width: 322px;
+    padding: 10px 35px;
+    cursor: pointer;
+    background-color: #212121;
+    border-radius: 6px;
+    border: 2px solid #212121;
+    box-shadow: 6px 6px 10px rgba(0,0,0,1),
+    1px 1px 10px rgba(255, 255, 255, 0.6);
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.35s;
+  }
+  
+  .btn:hover {
+    transform: scale(1.05);
+    box-shadow: 6px 6px 10px rgba(0,0,0,1),
+    1px 1px 10px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 10px rgba(0,0,0,1),
+    inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+  }
+  
+  .btn:focus {
+    transform: scale(1.05);
+    box-shadow: 6px 6px 10px rgba(0,0,0,1),
+    1px 1px 10px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 10px rgba(0,0,0,1),
+    inset -1px -1px 5px rgba(255, 255, 255, 0.6);
+  }
+
+
+/* Estilo para el contenedor del input */
+.password-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Estilo del input de contraseña */
+.password-container input[type="password"],
+.password-container input[type="text"] {
+  width: 100%;
+  padding-right: 40px; /* Espacio para el checkbox */
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+/* Checkbox como icono dentro del input */
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+i{
+  color: #fff;
+}
+
+/* Estilos para el overlay del código QR */
+#qr-code-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo semi-transparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+  }
+  
+  /* Estilos para el contenedor del código QR */
+  #qr-code-container {
+    background-color: #fff; /* Fondo blanco para el código QR */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  #qr-code-image {
+    /* degradado */
+    background: linear-gradient(145deg, #f0f0f0, #1510a3);
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Estilos para el overlay del Token */
+  #token-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Contenedor del token */
+#token-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    width: 500px;
+    position: relative;
+    text-align: center;
+    transform: scale(0.9);
+    animation: modalSlideIn 0.3s ease-out forwards;
+}
+
+
+
+/* Texto del token */
+#token {
+    color: #2d3436;
+    font-size: 1rem;
+    margin: 0;
+    word-break: break-all;
+    font-family: 'Courier New', monospace;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #ced4da;
+}
+
+#refreshtoken {
+    color: #2d3436;
+    font-size: 1rem;
+    margin: 0;
+    word-break: break-all;
+    font-family: 'Courier New', monospace;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #ced4da;
+}
+
+
+/* Estilos base para todos los botones */
+.buttons-container>button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-20px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    #token-container {
+        width: 90%;
+        padding: 1.5rem;
+    }
+    
+    #token {
+        font-size: 1.1rem;
+        padding: 1rem;
+    }
+}
+
+
+/* Botón de Cerrar Sesión */
+.logout-btn {
+    background-color: #ff4757;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.button.logout:hover {
+    background-color: #ff6b81;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+}
+
+.logout-btn a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+/* Botón Generar QR */
+.generate-qr-btn {
+    background-color: #2ed573;
+    color: white;
+}
+
+.generate-qr-btn:hover {
+    background-color: #7bed9f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(46, 213, 115, 0.4);
+}
+
+/* Botón Generar Token */
+.generate-token-btn {
+    background-color: #3742fa;
+    color: white;
+}
+
+.generate-token-btn:hover {
+    background-color: #5352ed;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(55, 66, 250, 0.4);
+}
+
+/* Efectos comunes al hacer clic */
+button:active {
+    transform: translateY(1px);
+}
+
+/* Opcional: Contenedor para alinear los botones */
+.buttons-container {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+  
+    

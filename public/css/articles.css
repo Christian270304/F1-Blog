@@ -311,6 +311,13 @@ nav ul li a:hover {
 .user-article h4, .user-article p {
   color: #000000;
   transition: color 0.3s ease;
+  opacity: 0.3;
+}
+
+.user-article:hover p span {
+  color: #000000;
+  transition: color 0.3s ease;
+  opacity: 0.3;
 }
 
 .card-actions {
@@ -327,7 +334,22 @@ nav ul li a:hover {
 .user-article:hover .card-actions {
   display: flex;
 }
+.card-actions button {
+  width: 150px;
+  height: 30px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin: 5px 0;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
+.card-actions button:hover {
+  background-color: #0056b3;
+}
 
 
 
@@ -488,4 +510,133 @@ nav ul li a:hover {
   background: linear-gradient(145deg, #f0f0f0, #1510a3);
   width: 300px;
   height: 300px;
+}
+
+
+
+/* Estilos para el modal */
+.modal {
+  display: none; /* Ocultar por defecto */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.modal-actions .btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal-actions .btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.modal-actions .btn-danger:hover {
+  background-color: #c82333;
+}
+
+.modal-actions .btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.modal-actions .btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+}
+
+
+
+/* Estilos para el modal */
+.readModal {
+  display: none; /* Ocultar por defecto */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.read-modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.read-modal-content img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.read-modal-content h4 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.read-modal-content p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
 }

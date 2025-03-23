@@ -22,19 +22,20 @@
                 </ul>
             </nav>
             <div class="user-icon">
-                <label for="dropdown">
-                    {{-- <?php
-                    // PHP: Comprobar si el usuario ya tiene una imagen guardada
-                    //$profileImage = (!empty(isset($_SESSION['profile_image']))) ? $_SESSION['profile_image'] : $defaultImage;
-                    ?> --}}
-                    {{-- <img src="<?php echo $profileImage; ?>" alt="Foto de perfil" id="userIcon"> --}}
+                <label  for ="dropdown">
+               
+                    <img src="" alt="Foto de perfil" id="userIcon">
                 </label>
                 <input hidden class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
                 <div class="section-dropdown">
-                    <?php if (isset($_SESSION['username'])): ?>
-                        <a href="index.php?pagina=Perfil">Perfil <i class="uil uil-arrow-right"></i></a>
-                        <a href="index.php?pagina=MostrarInici&logout=1">Tancar Sessió <i class="uil uil-arrow-right"></i></a>
-                    <?php endif; ?>
+                    <a href="{{ route('profile') }}">Perfil <i class="uil uil-arrow-right"></i></a>
+            
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Cerrar Sesión <i class="uil uil-arrow-right"></i>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>

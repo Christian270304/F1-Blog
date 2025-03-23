@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('titol', 255);
             $table->text('cos');
-            $table->string('iamge', 255)->nullable();
+            $table->string('image', 255)->nullable();
             $table->timestamp('creador_el');
             $table->timestamp('modificado_el');
             $table->unsignedInteger('user_id');

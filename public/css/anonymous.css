@@ -23,7 +23,8 @@ body {
     grid-template-rows: auto 1fr auto;
     grid-template-areas: 
         'header'
-        'content';
+        'content'
+        'pagination';
 }
 .header {
     grid-area: header;
@@ -337,12 +338,13 @@ nav ul li a:hover {
 
 /* Paginación */
 .pagination {
-  display: flex;
+  grid-area: pagination;
+  /* display: flex; */
   justify-content: center;
-  position: fixed;
+  /* position: fixed; */
   bottom: 20px;
   left: 50%;
-  transform: translateX(-50%);
+  /* transform: translateX(-50%); */
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -387,6 +389,22 @@ nav ul li a:hover {
   background-color: #007BFF;
   color: white;
 }
+
+/* Responsive: Asegurar que la paginación no se salga en móviles */
+@media (max-width: 600px) {
+  .pagination {
+    flex-wrap: wrap;
+    bottom: 10px;
+    padding: 8px;
+  }
+  
+  .pagination a, .pagination span, .pagination .arrow {
+    padding: 6px 10px;
+    font-size: 14px;
+    margin: 3px;
+  }
+}
+
 
 /* Responsivo */
 /* Ajustes para pantallas medianas */

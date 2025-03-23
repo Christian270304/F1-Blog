@@ -26,7 +26,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
-        'username',
         'email',
         'password',
         'creado_el'
@@ -53,5 +52,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'user_id');
+    }
+
+    /**
+     * Get the user ID.
+     *
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->id;
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\CustomResetPassword($token));
     }
 }
