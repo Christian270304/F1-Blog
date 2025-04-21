@@ -299,6 +299,150 @@
         .form-group.error textarea {
             border-color: var(--rojo-intenso);
         }
+
+        /* Botón de Cerrar Sesión */
+.logout-btn {
+    background-color: #ff4757;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.button.logout:hover {
+    background-color: #ff6b81;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+}
+
+.logout-btn a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+/* Botón Generar QR */
+.generate-qr-btn {
+    background-color: #2ed573;
+    color: white;
+}
+
+.generate-qr-btn:hover {
+    background-color: #7bed9f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(46, 213, 115, 0.4);
+}
+
+/* Botón Generar Token */
+.generate-token-btn {
+    background-color: #3742fa;
+    color: white;
+}
+
+.generate-token-btn:hover {
+    background-color: #5352ed;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(55, 66, 250, 0.4);
+}
+
+/* Efectos comunes al hacer clic */
+button:active {
+    transform: translateY(1px);
+}
+
+/* Opcional: Contenedor para alinear los botones */
+.buttons-container {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Estilos para el overlay del código QR */
+#qr-code-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo semi-transparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+  }
+  
+  /* Estilos para el contenedor del código QR */
+  #qr-code-container {
+    background-color: #fff; /* Fondo blanco para el código QR */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  #qr-code-image {
+    /* degradado */
+    background: linear-gradient(145deg, #f0f0f0, #1510a3);
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Estilos para el overlay del Token */
+  #token-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Contenedor del token */
+#token-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    width: 500px;
+    position: relative;
+    text-align: center;
+    transform: scale(0.9);
+    animation: modalSlideIn 0.3s ease-out forwards;
+}
+
+
+
+/* Texto del token */
+#token {
+    color: #2d3436;
+    font-size: 1rem;
+    margin: 0;
+    word-break: break-all;
+    font-family: 'Courier New', monospace;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #ced4da;
+}
+
+#refreshtoken {
+    color: #2d3436;
+    font-size: 1rem;
+    margin: 0;
+    word-break: break-all;
+    font-family: 'Courier New', monospace;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #ced4da;
+}
     
         /* RESPONSIVE */
         @media (max-width: 768px) {
@@ -460,6 +604,20 @@
                 </div>
             </form>
         </div>
+        <div class="buttons-container">
+            <!-- Botón para cerrar la sesion -->
+            <button class="logout-btn" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <a href="#">Cerrar Sesión</a>
+            </button>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+            <!-- Botón para generar el código QR -->
+            <button id="generate-qr-btn" class="generate-qr-btn">Generar QR</button>
+
+            <!-- Botón para generar token de la api -->
+            <button id="generate-token-btn" class="generate-token-btn">Generar Token</button>
+        </div>
 
         <!-- Modal -->
         <form action="{{ route('updatePassword') }}" method="POST">
@@ -514,6 +672,27 @@
                 </div>
             </div>
         </form>
+
+        <!-- Contenedor para mostrar el código QR -->
+        <div id="qr-code-overlay">
+            <div id="qr-code-container">
+                <img id="qr-code-image" src="" alt="Código QR">
+            </div>
+        </div>
+
+        <!-- Contenedor para mostrar el token -->
+        <div id="token-overlay">
+            <div id="token-container">
+                <label for="token">Token</label>
+                <h3 id="token"></h3><br>
+                <label for="refreshtoken">Refresh Token</label>
+                <h3 id="refreshtoken"></h3><br><br>
+                <small>No compartir los tokens</small>
+            </div>
+            <div id="refreshtoken-container">
+                
+            </div>
+        </div>
     </div>
 
     <script>
@@ -579,6 +758,75 @@
                 toggleIcon.classList.add('fa-eye-slash');
             }
         }
+
+        // Generar token para la api
+        document.getElementById('generate-token-btn').addEventListener('click', function () {
+            var token = document.getElementById('token');
+            var refreshtoken = document.getElementById('refreshtoken');
+            var tokenOverlay = document.getElementById('token-overlay');
+
+            // Hacer la solicitud al backend para generar los tokens
+            fetch('/generate-tokens', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Agregar el token CSRF
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        token.innerHTML = data.access_token; // Mostrar el access token
+                        refreshtoken.innerHTML = data.refresh_token; // Mostrar el refresh token
+                        tokenOverlay.style.display = 'flex';
+                
+                    } else {
+                        console.error('Error al generar los tokens:', data.message);
+                        alert('Error al generar los tokens.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al generar los tokens.');
+                });
+        });
+
+        // Cerrar el overlay cuando se hace clic fuera del Token
+        document.getElementById('token-overlay').addEventListener('click', function(event) {
+            if (event.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        document.getElementById('generate-qr-btn').addEventListener('click', function () {
+            // Obtener el contenedor del código QR
+            const qrImage = document.getElementById('qr-code-image');
+            const qrOverlay = document.getElementById('qr-code-overlay');
+
+            // URL para el QR
+            const username = '{{ auth()->user()->username }}';
+            const url = `https://ctorres.cat/index.php?pagina=Login&username=${username}`;
+
+            // Hacer la solicitud al backend para generar el QR
+            fetch(`/generate-qr?text=${encodeURIComponent(url)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        qrImage.src = data.url; // Establecer la imagen del QR
+                        qrOverlay.style.display = 'flex'; // Mostrar el overlay
+                    } else {
+                        console.error('Error al generar el QR:', data);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // Cerrar el overlay cuando se hace clic fuera del código QR
+        document.getElementById('qr-code-overlay').addEventListener('click', function (event) {
+            if (event.target === this) {
+                this.style.display = 'none';
+            }
+        });
 
         @if ($errors->any() && session('modal') === 'passwordModal')
             document.addEventListener('DOMContentLoaded', function() {

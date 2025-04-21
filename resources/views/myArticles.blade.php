@@ -154,10 +154,11 @@
     confirmDeleteButton.onclick = function() {
         if (articleIdToDelete) {
             // Realizar la solicitud para eliminar el artículo
-            fetch(`/articles/${articleIdToDelete}`, {
+            fetch(`/delete/${articleIdToDelete}`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
                 }
             })
             .then(response => {

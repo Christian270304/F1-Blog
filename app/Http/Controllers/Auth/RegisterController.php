@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
+
+    public function showRegisterForm()
+    {
+        return view('signup');
+    }
     /*
     |--------------------------------------------------------------------------
     | Register Controller

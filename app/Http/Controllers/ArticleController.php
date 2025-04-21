@@ -139,4 +139,18 @@ class ArticleController extends Controller
         ]);
     }
 
+    public function deleteArticle($id)
+    {
+        $article = Article::find($id);
+
+        // Verificar si el usuario autenticado es el propietario del artículo
+        if (!$article || $article->user_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'No tienes permiso para eliminar este artículo.');
+        }
+
+        $article->delete();
+
+        return response()->json(['success' => 'Artículo eliminado correctamente.']);
+    }
+
 }

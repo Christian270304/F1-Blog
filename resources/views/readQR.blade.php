@@ -45,13 +45,22 @@
 
         <div class="content">
             <h1>Leer QR</h1>
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             
-            <form action="index.php?pagina=LeerQR" method="post" enctype="multipart/form-data">
-                
+            <form action="{{ route('read.qr') }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <label for="qrImage">Sube una imagen de un código QR:</label>
                 <input type="file" name="qrImage" id="qrImage" accept="image/png" required>
-                <input type="submit" value="Leer QR">
-                <?= isset($error)? "<label style='color: red; font-weight: bold;'>".$error."</label>": ''; ?>
+                <button type="submit" class="btn btn-primary">Leer QR</button>
             </form>
         </div>
     </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\QRController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TokenController;
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -28,18 +29,20 @@ Route::get('/password/confirm', [ConfirmPasswordController::class, 'showConfirmF
 Route::post('/password/confirm', [ConfirmPasswordController::class, 'confirm']);
 
 
-
 Route::get('/', [ArticleController::class, 'showAnonymous'])->name('anonymous');
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::middleware('guest')->group(function () {
 
-Route::get('/signup', [RegisterController::class, 'showRegisterForm'])->name('signup');
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
-Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/signup', [RegisterController::class, 'showRegisterForm'])->name('signup');
 
-Route::post('/signup', [RegisterController::class, 'register']);
+    Route::post('/login', [LoginController::class, 'login']);
 
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/signup', [RegisterController::class, 'register']);
+
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+});
 
 Route::middleware('auth')->group(function () {
 
@@ -59,15 +62,21 @@ Route::middleware('auth')->group(function () {
         return view('newArticle');
     })->name('newArticle');
 
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home');
+    // Route::get('/home', function () {
+    //     return view('home');
+    // })->name('home');
 
     Route::get('/readQR', [QRController::class, 'showQRForm'])->name('readQR');
 
     Route::get('/edit/{id}', [ArticleController::class, 'editArticle'])->name('editArticle');
 
     Route::get('/article/{id}', [ArticleController::class, 'getArticle'])->name('getArticle');
+
+    Route::get('/generate-qr', [QRController::class, 'generate'])->name('generate.qr');
+
+    Route::post('/read-qr', [QRController::class, 'readQR'])->name('read.qr');
+
+    Route::post('/generate-tokens', [TokenController::class, 'generateTokens'])->name('generate.tokens');
 
     Route::post('/newArticle', [ArticleController::class, 'newArticle']);
 
@@ -76,12 +85,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/updatePassword', [UserController::class, 'updatePassword'])->name('updatePassword');
 
     Route::put('updateArticle/{id}', [ArticleController::class, 'updateArticle'])->name('updateArticle');
+
+    Route::delete('delete/{id}', [ArticleController::class, 'deleteArticle'])->name('deleteArticle');
 });
 ?>
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
