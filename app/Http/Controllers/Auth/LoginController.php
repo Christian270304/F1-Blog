@@ -26,18 +26,10 @@ class LoginController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
-            $user = Auth::user();
-
-            // Access token válido por 15 minutos (por defecto)
-            $accessToken = JWTAuth::fromUser($user);
-
-            // Refresh token válido por 7 días
-            $refreshToken = JWTAuth::claims(['token_type' => 'refresh'])->fromUser($user);
+            
 
             // Crear cookies seguras y HttpOnly
-            return redirect()->intended($this->redirectTo)
-                ->cookie('access_token', $accessToken, 15, null, null, false, true)
-                ->cookie('refresh_token', $refreshToken, 60 * 24 * 7, null, null, false, true);
+            return redirect()->intended($this->redirectTo);
         }
 
         return back()->withErrors([
