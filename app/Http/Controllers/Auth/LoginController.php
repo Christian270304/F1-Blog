@@ -26,16 +26,15 @@ class LoginController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
-            
-
-            // Crear cookies seguras y HttpOnly
-            return redirect()->intended($this->redirectTo);
+            $request->session()->regenerate(); 
+            return redirect()->intended($this->redirectTo ?? '/');
         }
 
         return back()->withErrors([
-            'email' => 'Las credenciales no coinciden con nuestros registros.',
-        ])->withInput($request->only('email', 'remember'));
+            'username' => 'Las credenciales no coinciden con nuestros registros.',
+        ])->withInput($request->only('username', 'remember'));
     }
+
 
     /*
     |--------------------------------------------------------------------------
