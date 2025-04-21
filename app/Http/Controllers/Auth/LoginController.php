@@ -6,10 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends Controller
 {
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/myArticles';
 
     public function showLoginForm()
     {
@@ -18,23 +23,23 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // Validar las credenciales ingresadas
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        $credentials = $request->only('username', 'password');
-
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate(); 
-            return redirect()->intended($this->redirectTo ?? '/');
+        // Intentar autenticar al usuario
+        if (Auth::attempt($request->only('username', 'password'), $request->filled('remember'))) {
+            // Redirigir al usuario a la página definida en $redirectTo
+            return redirect()->intended($this->redirectTo);
         }
 
+        // Si las credenciales no son válidas, redirigir de vuelta con un mensaje de error
         return back()->withErrors([
-            'username' => 'Las credenciales no coinciden con nuestros registros.',
-        ])->withInput($request->only('username', 'remember'));
+            'email' => 'Las credenciales no coinciden con nuestros registros.',
+        ])->withInput($request->only('email', 'remember'));
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -49,12 +54,7 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/myArticles';
+    
 
     /**
      * Create a new controller instance.
@@ -65,5 +65,11 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect('/');
     }
 }
