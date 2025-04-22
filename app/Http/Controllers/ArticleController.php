@@ -27,10 +27,12 @@ class ArticleController extends Controller
 
     public function showMyArticles(Request $request)
     {
+        $order = $request->get('order', 'ASC');
+
         $userId = Auth::id();
         $perPage = $request->input('perPage', 5);
-        $articles = Article::where('user_id', $userId)->paginate($perPage);
-        return view('myArticles' , compact('articles'));
+        $articles = Article::where('user_id', $userId)->orderBy('titol', $order)->paginate($perPage);
+        return view('myArticles' , compact('articles', 'order'));
     }
 
     public function showNewArticle()

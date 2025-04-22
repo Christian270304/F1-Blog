@@ -482,13 +482,19 @@ nav ul li a:hover {
             <div class="user-icon">
                 <label  for ="dropdown">
                
-                    <img src="{{ asset('assets/profile-account.svg') }}" alt="Foto de perfil" id="userIcon">
+                    <img src="@if (Auth::user()->image == null) 
+                        {{ asset('assets/profile-account.svg') }}
+                    @else
+                        {{ asset('storage/' . Auth::user()->image) }}
+                    @endif"  alt="Foto de perfil" id="userIcon">
                 </label>
                 <input hidden class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
                 <div class="section-dropdown">
                     <a href="{{ route('profile') }}">Perfil <i class="uil uil-arrow-right"></i></a>
             
-                    <a href="{{ route('admin') }}">Admin <i class="uil uil-arrow-right"></i></a>
+                    @if (Auth::user() && Auth::user()->role === 'admin')
+                        <a href="{{ route('admin') }}">Admin <i class="uil uil-arrow-right"></i></a>
+                    @endif
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         Cerrar Sesión <i class="uil uil-arrow-right"></i>
                     </a>

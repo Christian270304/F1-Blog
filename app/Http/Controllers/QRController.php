@@ -12,7 +12,7 @@ class QRController extends Controller
     public function generate(Request $request)
     {
         // Obtener el texto para el QR desde la solicitud
-        $text = $request->input('text', 'Texto por defecto');
+        $text = $request->input('text', '');
 
         // Configurar las opciones del QR
         $options = new QROptions([
@@ -50,16 +50,17 @@ class QRController extends Controller
         // Leer el contenido del QR
         $result = (new QRCode)->readFromFile($fileTmpPath); // -> DecoderResult
         $content = trim($result->data); // Elimina espacios en blanco al inicio y al final
+   
 
         // Expresión regular para validar que el contenido comience con la URL fija
-        $pattern = '/^https:\/\/www\.ctorres\.cat\/index\.php\?pagina=Login&username=([^&]+)/';
+        $pattern = '/^http:\/\/(?:www\.)?f1-blog\.test\/Login&username=([^&]+)/';
         if (preg_match($pattern, $content, $matches)) {
             // Extraer el nombre de usuario del contenido
             $username = $matches[1];
 
             // Verificar si el usuario tiene la sesión iniciada
             if (Auth::check()) {
-                $redirectUrl = "https://www.ctorres.cat/index.php?pagina=UserProfile&username=" . urlencode($username);
+                $redirectUrl = "http://f1-blog.test/userProfile?username=" . urlencode($username);
                 return redirect()->away($redirectUrl);
             } else {
                 return redirect()->away($content);

@@ -16,15 +16,20 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="{{ route('home') }}">Inici</a></li>
-                    <li><a href="{{ route('articles') }}">Articles</a></li>
-                    <li><a href="{{ route('anonymous') }}">Insertar Article</a></li>
+                    <li><a href="{{ route('articles') }}" id="showAllArticles" >Inici</a></li>
+                    <li><a href="{{ route('myArticles') }}" id="showMyArticles" >Articles</a></li>
+                    <li><a href="{{ route('newArticle') }}" id="newArticle" >Crear Article</a></li>
+                    <li><a href="{{ route('readQR') }}">Leer QR</a></li>
                 </ul>
             </nav>
             <div class="user-icon">
                 <label  for ="dropdown">
                
-                    <img src="" alt="Foto de perfil" id="userIcon">
+                    <img src="@if ($user->image == null) 
+                            {{ asset('assets/profile-account.svg') }}
+                        @else
+                            {{ asset('storage/' . $user->image) }}
+                        @endif" alt="Foto de perfil" id="userIcon">
                 </label>
                 <input hidden class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
                 <div class="section-dropdown">
@@ -40,6 +45,17 @@
             </div>
         </div>
         <div class="content-admin">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <h1>Administrar Usuarios</h1>
             <input type="text" id="searchInput" placeholder="Buscar por Username o Email" onkeyup="searchUsers()">
             <div class="row">
@@ -55,6 +71,13 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($users as $user)
+                            <tr>
+                                <td>{{ $user->username }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td><a href="#" onclick="openDeleteModal({{ $user->id }})">Eliminar</a></td>
+                            </tr>
+                            @endforeach
                         <?php
                     //require_once 'Model/Usuarios.php'; // Incluir el modelo que maneja los usuarios
 
@@ -75,24 +98,26 @@
             </div>
         </div>
     </div>
-            <button><a href="index.php?pagina=Mostrar">Volver</a></button>
+            <button><a href="{{ route('myArticles') }}">Volver</a></button>
 
             <div id="deleteModal" class="modal">
-                        <div class="modal-content">
-                            <div class="header">
-                                <span class="close" id="closeModal">&times;</span>
-                                <h2>Confirmar Eliminación</h2>
-                            </div>
-                            {{-- <p>¿Desea eliminar este usuario? <input type="text" readonly value="<?php echo htmlspecialchars($usuario['username'])?>"></p> --}}
-                            <p>¿También desea eliminar todos los artículos asociados?</p>
-                            <form id="deleteForm" method="POST" action="index.php?pagina=EliminarUsuario">
-                                <input type="hidden" name="user_id" id="user_id" value="">
-                                <button type="button" id="confirmDelete" class="btn">Eliminar Usuario y Artículos</button>
-                                <button type="button" id="confirmDeleteUser " class="btn">Eliminar Solo Usuario</button>
-                                <button type="button" id="cancelDelete" class="btn">Cancelar</button>
-                            </form>
-                        </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close" id="closeModal">&times;</span>
+                        <h2>Confirmar Eliminación</h2>
                     </div>
+                    {{-- <p>¿Desea eliminar este usuario? <input type="text" readonly value="<?php echo htmlspecialchars($usuario['username'])?>"></p> --}}
+                    <p>¿También desea eliminar todos los artículos asociados?</p>
+                    <form id="deleteForm" method="POST" action="{{ route('deleteUser') }}">
+                        @csrf
+                        <input type="hidden" name="user_id" id="user_id" value="">
+                        <input type="hidden" name="delete_articles" id="delete_articles" value="false">
+                        <button type="button" id="confirmDelete" class="btn">Eliminar Usuario y Artículos</button>
+                        <button type="button" id="confirmDeleteUser" class="btn">Eliminar Solo Usuario</button>
+                        <button type="button" id="cancelDelete" class="btn">Cancelar</button>
+                    </form>
+                </div>
+            </div>
 
 
 
@@ -156,20 +181,14 @@
 
     // Confirmar eliminación de usuario y artículos
     document.getElementById("confirmDelete").onclick = function() {
-        // Agregar un campo oculto para indicar que se deben eliminar los artículos
-        const form = document.getElementById("deleteForm");
-        const eliminarArticulos = document.createElement("input");
-        eliminarArticulos.type = "hidden";
-        eliminarArticulos.name = "eliminarArticulos";
-        eliminarArticulos.value = "true";
-        form.appendChild(eliminarArticulos);
-        form.submit(); // Enviar el formulario
+        document.getElementById("delete_articles").value = "true"; // Indicar que se deben eliminar los artículos
+        document.getElementById("deleteForm").submit(); // Enviar el formulario
     }
 
     // Confirmar eliminación solo del usuario
-    document.getElementById("confirmDeleteUser ").onclick = function() {
-        const form = document.getElementById("deleteForm");
-        form.submit(); // Enviar el formulario sin eliminar artículos
+    document.getElementById("confirmDeleteUser").onclick = function() {
+        document.getElementById("delete_articles").value = "false"; // Indicar que no se deben eliminar los artículos
+        document.getElementById("deleteForm").submit(); // Enviar el formulario
     }
 
     // Asegúrate de que el modal esté oculto al cargar la página

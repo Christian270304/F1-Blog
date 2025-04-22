@@ -64,20 +64,23 @@
                     <span class="error">{{ $message }}</span>
                 @enderror
             
-
+                @if ($errors->has('email'))
+                    <div class="alert alert-danger">
+                        {{ $errors->first('email') }}
+                    </div>
+                @endif
             <button class="btn" type="submit">Crear</button>
 
-            <a class="g_id_signin" href="">
-                <img src="{{ asset('assets/google.png') }}" alt="Google Logo" class="google-logo" width="20" height="20"> 
+            <a class="g_id_signin" href="{{ route('google.redirect') }}">
+                <img src="{{ asset('assets/google.png') }}" alt="Google Logo" class="google-logo" width="20" height="20"> <!-- Logo opcional -->
                 Iniciar sesión con Google</a>
 
 
-            <a class="btn-github" href="index.php?pagina=hybridauth">
+            <a class="btn-github" href="{{ route('github.redirect') }}">
                 <img src="{{ asset('assets/github.png') }}" alt="GitHub Logo" class="github-logo">
                 Iniciar sesión con GitHub</a>
 
 
-            <a href="{{ route('login') }}" class="btn-link">Tengo una cuenta</a>
             <a href="{{ route('login') }}" class="btn-link">Tengo una cuenta</a>
         </form>
     </div>

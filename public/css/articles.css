@@ -640,3 +640,33 @@ nav ul li a:hover {
   color: #666;
   line-height: 1.5;
 }
+
+
+
+#qr-code-overlay {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo semi-transparente */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+}
+
+/* Estilos para el contenedor del código QR */
+#qr-code-container {
+  background-color: #fff; /* Fondo blanco para el código QR */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#qr-code-image {
+  /* degradado */
+  background: linear-gradient(145deg, #f0f0f0, #1510a3);
+  width: 300px;
+  height: 300px;
+}

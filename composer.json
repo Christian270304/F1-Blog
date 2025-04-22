@@ -10,9 +10,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "anhskohbo/no-captcha": "^3.7",
         "chillerlan/php-qrcode": "^5.0",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.19",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.6",
         "tymon/jwt-auth": "^2.2"

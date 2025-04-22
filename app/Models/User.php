@@ -29,7 +29,9 @@ class User extends Authenticatable implements JWTSubject
         'username',
         'email',
         'password',
-        'creado_el'
+        'creado_el',
+        'role',
+        'OAuth'
     ];
 
     /**
@@ -89,5 +91,20 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($user) {
+            if (User::where('email', $user->email)->exists()) {
+                throw new \Exception('El email ya está en uso.');
+            }
+
+            if (User::where('username', $user->username)->exists()) {
+                throw new \Exception('El username ya está en uso.');
+            }
+        });
     }
 }

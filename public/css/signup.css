@@ -216,3 +216,15 @@ body {
     outline: 2px solid #0366d6; /* Contorno visible al enfocar */
     outline-offset: 2px; /* Separar el contorno del botón */
 }
+
+.alert-danger {
+    background-color: #f8d7da; /* Rojo claro */
+    color: #721c24; /* Rojo oscuro */
+    border: 1px solid #f5c6cb; /* Borde rojo */
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  } 

@@ -271,6 +271,19 @@
             font-weight: 700;
         }
 
+        .disabled-btn {
+            background: var(--gris-metalico);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
         .change-password-btn {
             background: var(--rojo-intenso);
             color: white;
@@ -523,13 +536,19 @@ button:active {
             <div class="user-icon">
                 <label  for ="dropdown">
                
-                    <img src="{{ asset('assets/profile-account.svg') }}" alt="Foto de perfil" id="userIcon">
+                    <img src="@if (Auth::user()->image == null) 
+                        {{ asset('assets/profile-account.svg') }}
+                    @else
+                        {{ asset('storage/' . Auth::user()->image) }}
+                    @endif"  alt="Foto de perfil" id="userIcon">
                 </label>
                 <input hidden class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
                 <div class="section-dropdown">
                     <a href="{{ route('profile') }}">Perfil <i class="uil uil-arrow-right"></i></a>
             
-                    <a href="{{ route('admin') }}">Admin <i class="uil uil-arrow-right"></i></a>
+                    @if (Auth::user() && Auth::user()->role === 'admin')
+                        <a href="{{ route('admin') }}">Admin <i class="uil uil-arrow-right"></i></a>
+                    @endif
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         Cerrar Sesión <i class="uil uil-arrow-right"></i>
                     </a>
@@ -546,7 +565,11 @@ button:active {
 
                 <div class="profile-header">
                     <div class="profile-avatar">
-                        <img id="avatarPreview" src="{{ asset('assets/profile-account.svg') }}" alt="Avatar">
+                        <img id="avatarPreview" src="@if (Auth::user()->image == null) 
+                        {{ asset('assets/profile-account.svg') }}
+                    @else
+                        {{ asset('storage/' . Auth::user()->image) }}
+                    @endif" alt="Avatar">
                         <label for="avatarInput" class="edit-icon">
                             <i class="fas fa-pencil-alt"></i>
                         </label>
@@ -581,13 +604,18 @@ button:active {
                             id="email" 
                             value="{{ old('email', auth()->user()->email) }}"
                             placeholder="Correo electrónico"
+                            @if (Auth::user()->OAuth) disabled @endif
                         >
                         @error('email')
                             <p class="error-message">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <button type="button" class="change-password-btn" id="openModalBtn">Cambiar contraseña</button>
+                    @if (Auth::user()->OAuth)
+                        <button type="button" class="disabled-btn" disabled>No puedes cambiar la contraseña</button>
+                    @else
+                        <button type="button" class="change-password-btn" id="openModalBtn">Cambiar contraseña</button>
+                    @endif
 
                     <div class="form-group">
                         <label for="bio">Biografía</label>

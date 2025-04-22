@@ -46,13 +46,19 @@
                 <div class="user-icon">
                     <label  for ="dropdown">
                 
-                        <img src="" alt="Foto de perfil" id="userIcon">
+                        <img src="@if (Auth::user()->image == null) 
+                                {{ asset('assets/profile-account.svg') }}
+                            @else
+                                {{ asset('storage/' . Auth::user()->image) }}
+                            @endif"  alt="Foto de perfil" id="userIcon">
                     </label>
                     <input hidden class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
                     <div class="section-dropdown">
                         <a href="{{ route('profile') }}">Perfil <i class="uil uil-arrow-right"></i></a>
                 
-                        <a href="{{ route('admin') }}">Admin <i class="uil uil-arrow-right"></i></a>
+                        @if (Auth::user() && Auth::user()->role === 'admin')
+                            <a href="{{ route('admin') }}">Admin <i class="uil uil-arrow-right"></i></a>
+                        @endif
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             Cerrar Sesión <i class="uil uil-arrow-right"></i>
                         </a>
@@ -84,6 +90,13 @@
         
     </div>
 
+    <!-- Contenedor para mostrar el código QR -->
+    <div id="qr-code-overlay">
+        <div id="qr-code-container">
+            <img id="qr-code-image" src="" alt="Código QR">
+        </div>
+    </div>
+
     <!-- Modal -->
     <div id="articleModal" class="modal">
         <div class="modal-content">
@@ -108,6 +121,43 @@
             modal.style.display = "none";
         }
     }
+    document.addEventListener('DOMContentLoaded', function () {
+        const qrButtons = document.querySelectorAll('.qr-content');
+
+        qrButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const qrImage = document.getElementById('qr-code-image');
+                const qrOverlay = document.getElementById('qr-code-overlay');
+
+                const username = this.closest('.card').querySelector('.username').textContent.trim();
+                const url = `http://f1-blog.test/Login&username=${username}`;
+
+                fetch(`/generate-qr?text=${encodeURIComponent(url)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            qrImage.src = data.url; 
+                            qrOverlay.style.display = 'flex'; 
+                        } else {
+                            console.error('Error al generar el QR:', data);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+
+            });
+        });
+
+        
+
+            // Cerrar el overlay cuando se hace clic fuera del código QR
+            document.addEventListener('click', function (event) {
+            const qrOverlay = document.getElementById('qr-code-overlay');
+            const qrImage = document.getElementById('qr-code-image');
+            if (qrOverlay.style.display === 'flex' && !qrImage.contains(event.target)) {
+                qrOverlay.style.display = 'none';
+            }
+        });
+    })
     </script>
 </body>
 

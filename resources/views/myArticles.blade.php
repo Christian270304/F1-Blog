@@ -38,20 +38,33 @@
                 </form>
             </div>
             <div class="sort-buttons">
-                <button type="submit" name="order" value="ASC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'ASC') ? 'class="active"' : ''; ?>>A-Z</button>
-                <button type="submit" name="order" value="DESC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'DESC') ? 'class="active"' : ''; ?>>Z-A</button>
-
+                <form action="{{ route('myArticles') }}" method="GET">
+                    <input type="hidden" name="order" value="ASC">
+                    <input type="hidden" name="perPage" value="{{ request('perPage', 5) }}">
+                    <button type="submit" class="{{ request('order') === 'ASC' ? 'active' : '' }}">A-Z</button>
+                </form>
+                <form action="{{ route('myArticles') }}" method="GET">
+                    <input type="hidden" name="order" value="DESC">
+                    <input type="hidden" name="perPage" value="{{ request('perPage', 5) }}">
+                    <button type="submit" class="{{ request('order') === 'DESC' ? 'active' : '' }}">Z-A</button>
+                </form>
             </div>
             <div class="user-icon">
                 <label  for ="dropdown">
                
-                    <img src="" alt="Foto de perfil" id="userIcon">
+                    <img src="@if (Auth::user()->image == null) 
+                                {{ asset('assets/profile-account.svg') }}
+                            @else
+                                {{ asset('storage/' . Auth::user()->image) }}
+                            @endif"  alt="Foto de perfil" id="userIcon">
                 </label>
                 <input hidden class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
                 <div class="section-dropdown">
                     <a href="{{ route('profile') }}">Perfil <i class="uil uil-arrow-right"></i></a>
             
-                    <a href="{{ route('admin') }}">Admin <i class="uil uil-arrow-right"></i></a>
+                    @if (Auth::user() && Auth::user()->role === 'admin')
+                        <a href="{{ route('admin') }}">Admin <i class="uil uil-arrow-right"></i></a>
+                    @endif
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         Cerrar Sesión <i class="uil uil-arrow-right"></i>
                     </a>
@@ -78,6 +91,7 @@
             </div>
         @endforeach
     <div class="pagination">
+        {{$articles->links()}}
         {{-- @if ($page > 1)
             <a href="{{ route('articles', ['page' => $page - 1]) }}">Anterior</a>
         @endif

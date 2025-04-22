@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -19,7 +20,8 @@ return new class extends Migration
             $table->text('bio')->nullable();
             $table->string('image', 255)->nullable();
             $table->boolean('OAuth')->default(false);
-            $table->timestamp('creado_el');
+            $table->timestamp('creado_el')->default(DB::raw('CURRENT_TIMESTAMP'))->change();
+            $table->string('role', 20)->default('user');
         });
     }
 

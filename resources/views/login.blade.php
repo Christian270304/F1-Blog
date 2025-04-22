@@ -16,7 +16,6 @@
     <div class="card">
         <h4 class="title">Iniciar Sesion</h4>
 
-
         <form method="POST" action="{{ route('login') }}" id="form">
             @csrf
             <div class="field">
@@ -49,19 +48,29 @@
                     <span class="error">{{ $message }}</span>
                 @enderror
             <br><label>
-                <input type="checkbox" name="remember_me"> Recuérdame 
+                <input type="checkbox" name="remember_me" id="remember"> Recuérdame 
             </label><br><br>
             
-        
-          
+            @if (session('show_recaptcha'))
+                <div class="form-group">
+                    {!! NoCaptcha::renderJs() !!}
+                    {!! NoCaptcha::display() !!}
+                </div>
+            @endif
+                
+            @if ($errors->has('email'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('email') }}
+                </div>
+            @endif
             <button class="btn" type="submit">Entrar</button>
             
-            <a class="g_id_signin" href="">
+            <a class="g_id_signin" href="{{ route('google.redirect') }}">
                 <img src="{{ asset('assets/google.png') }}" alt="Google Logo" class="google-logo" width="20" height="20"> <!-- Logo opcional -->
                 Iniciar sesión con Google</a>
 
 
-            <a class="btn-github" href="index.php?pagina=hybridauth">
+            <a class="btn-github" href="{{ route('github.redirect') }}">
                 <img src="{{ asset('assets/github.png') }}" alt="GitHub Logo" class="github-logo">
                 Iniciar sesión con GitHub</a>
             <a href="{{ route('signup') }}" class="btn-link">No tengo cuenta 😔</a>
