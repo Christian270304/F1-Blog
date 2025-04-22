@@ -77,3 +77,6 @@ username: 'gorka_63' password: 'hRBO3kM1?' correo: 'zrt5pg2i@lycos.es'
 username: 'franciscojesus_74' password: 'xG5rF3nB!' correo: '65swvtqw3@caramail.com'
 
 username: 'merce_72' password: 'eI3iE1dE!' correo: 'u3xtm8fwy@lycos.es'
+
+# Laragon
+He tenido que cambiar en laragon el dominio a f1-blog.es porque en google no dejaba registrar el dominio .test
