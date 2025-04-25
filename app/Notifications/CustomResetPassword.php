@@ -12,11 +12,19 @@ class CustomResetPassword extends Notification
     use Queueable;
 
     /**
+     * The token for resetting the password.
+     *
+     * @var string
+     */
+    private string $token;
+    
+
+    /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(string $token)
     {
-        //
+        $this->token = $token;
     }
 
     /**
@@ -34,10 +42,12 @@ class CustomResetPassword extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $resetUrl = url('/password/reset/' . $this->token . '?email=' . urlencode($notifiable->email));
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->line('Per canviar la contrasenya, feu clic al botó següent:')
+                    ->action('Canviar Contrasenya', $resetUrl)
+                    ->line('Gràcies per utilitzar la nostra aplicació!');
     }
 
     /**

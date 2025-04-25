@@ -7,21 +7,34 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
 
-
 class ArticleController extends Controller
 {
 
     public function showAnonymous(Request $request)
     {
         $perPage = $request->input('perPage', 5);
-        $articles = Article::paginate($perPage);
+        $articles = Article::select('id','titol', 'cos', 'image', 'user_id')->paginate($perPage);
+        $articles->toArray();
         return view('anonymous', compact('articles'));
     }
 
     public function showArticles(Request $request)
     {
         $perPage = $request->input('perPage', 5);
-        $articles = Article::paginate($perPage);
+        $articles = Article::select('id','titol', 'cos', 'image', 'user_id')->paginate($perPage);
+        // Transformar los datos de los artículos
+        $articles->getCollection()->transform(function ($article) {
+            return [
+                'id' => $article->id,
+                'titol' => $article->titol,
+                'cos' => $article->cos,
+                'image' => $article->image,
+                'user' => [
+                    'username' => $article->user->username,
+                ],
+            ];
+        });
+    
         return view('articles', compact('articles'));
     }
 

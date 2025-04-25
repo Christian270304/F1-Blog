@@ -20,6 +20,10 @@
                     <li><a href="{{ route('myArticles') }}" id="showMyArticles" >Articles</a></li>
                     <li><a href="{{ route('newArticle') }}" id="newArticle" >Crear Article</a></li>
                     <li><a href="{{ route('readQR') }}">Leer QR</a></li>
+                    <li><a href="{{ route('articles') }}" id="showAllArticles" >Inici</a></li>
+                    <li><a href="{{ route('myArticles') }}" id="showMyArticles" >Articles</a></li>
+                    <li><a href="{{ route('newArticle') }}" id="newArticle" >Crear Article</a></li>
+                    <li><a href="{{ route('readQR') }}">Leer QR</a></li>
                 </ul>
             </nav>
             <div class="user-icon">
@@ -128,40 +132,6 @@
                     
         </div>
     </div>
-
-    <!-- <?php
-    // PHP: Comprobar si el usuario ya tiene una imagen guardada
-    $defaultImage = "https://storage.googleapis.com/a1aa/image/JLwi3piUzQY3G92u0CH63SjxE3kuf8lWqsoTZH7fYWfAkqWnA.jpg"; // URL predeterminada
-    $profileImage = (!empty(isset($_SESSION['profile_image']))) ? $_SESSION['profile_image'] : $defaultImage;
-    ?>
-    <div class="container">
-        <div class="account">
-            <div class="account-icon">
-                <img src="<?php echo $profileImage; ?>" alt="Foto de perfil">
-                <ul class="dropdown">
-                    <li><a href="index.php?pagina=Perfil">Perfil</a></li>
-                    <li><a href="index.php?pagina=MostrarInici">Cerrar Sesión</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="menu-toggle" id="menu-toggle">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-        </div>
-        <div class="nav-grid">
-            <nav class="nav-bar">
-                <ul>
-                    <li><a href="index.php?pagina=Inicio"><img class="icon" src="Imagenes/house.svg"><span>Inici</span></a></li>
-                    <li><a href="index.php?pagina=Mostrar"><img class="icon" src="Imagenes/newspaper.svg"><span>Articles</span></a></li>
-                    <li><a href="index.php?pagina=Insertar"><img class="icon" src="Imagenes/add-square.svg"><span>Insertar Article</span></a></li>
-                    <li><a href="index.php?pagina=Borrar"><img class="icon" src="Imagenes/delete-button.svg"><span>Borrar Article</span></a></li>
-                    <li><a href="index.php?pagina=Modificar"><img class="icon" src="Imagenes/edit.svg"><span>Modificar Article</span></a></li>
-                </ul>
-            </nav>
-        </div>
-        
-    </div> -->
     <script>
     // Función para abrir el modal de eliminación
     function openDeleteModal(userId) {

@@ -74,9 +74,7 @@ Route::middleware('auth')->group(function () {
         return view('profile');
     })->name('profile');
 
-    Route::get('/newArticle', function () {
-        return view('newArticle');
-    })->name('newArticle');
+    Route::get('/newArticle', [ArticleController::class, 'showNewArticle'])->name('newArticle');
 
     // Route::get('/home', function () {
     //     return view('home');

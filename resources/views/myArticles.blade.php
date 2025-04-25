@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articles</title>
-    <link rel="stylesheet" href="{{ asset('css/articles.css') }}">  
+    @vite(['resources/css/articles.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -84,12 +84,13 @@
                 <p class="texto">{!! $article->cos !!}</p>
              
                 <div class="card-actions">
-                    <button onclick="readArticle({{ $article->id }})">Leer</button>
+                    <button id="read" data-id="{{ $article->id }}" >Leer</button>
                     <button onclick="window.location.href='{{ route('editArticle', $article->id) }}'">Editar</button>
                     <button onclick="deleteArticle({{ $article->id }})">Eliminar</button>
                 </div>
             </div>
         @endforeach
+    </div>
     <div class="pagination">
         {{$articles->links()}}
         {{-- @if ($page > 1)
