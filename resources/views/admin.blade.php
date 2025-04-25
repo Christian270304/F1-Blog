@@ -20,20 +20,16 @@
                     <li><a href="{{ route('myArticles') }}" id="showMyArticles" >Articles</a></li>
                     <li><a href="{{ route('newArticle') }}" id="newArticle" >Crear Article</a></li>
                     <li><a href="{{ route('readQR') }}">Leer QR</a></li>
-                    <li><a href="{{ route('articles') }}" id="showAllArticles" >Inici</a></li>
-                    <li><a href="{{ route('myArticles') }}" id="showMyArticles" >Articles</a></li>
-                    <li><a href="{{ route('newArticle') }}" id="newArticle" >Crear Article</a></li>
-                    <li><a href="{{ route('readQR') }}">Leer QR</a></li>
                 </ul>
             </nav>
             <div class="user-icon">
                 <label  for ="dropdown">
                
-                    <img src="@if ($user->image == null) 
-                            {{ asset('assets/profile-account.svg') }}
-                        @else
-                            {{ asset('storage/' . $user->image) }}
-                        @endif" alt="Foto de perfil" id="userIcon">
+                    <img src="@if (Auth::user()->image == null) 
+                                {{ asset('assets/profile-account.svg') }}
+                            @else
+                                {{ asset('storage/' . Auth::user()->image) }}
+                            @endif"  alt="Foto de perfil" id="userIcon">
                 </label>
                 <input hidden class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
                 <div class="section-dropdown">

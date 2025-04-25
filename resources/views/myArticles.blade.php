@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/articles.css') }}">
     <title>Articles</title>
-    @vite(['resources/css/articles.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -28,9 +28,13 @@
         </nav>
         
         
-            <div class="search-bar">
-                <input type="text" name="search" id="search" placeholder="Buscar por título o contenido" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            </div>
+        <div class="search-bar">
+            <form action="{{ route('myArticles') }}" method="GET">
+                <input type="text" name="search" id="search" placeholder="Buscar por título o contenido" value="{{ request('search') }}">
+                <input type="hidden" name="order" value="{{ request('order', 'ASC') }}">
+                <input type="hidden" name="perPage" value="{{ request('perPage', 5) }}">
+            </form>
+        </div>
             <div class="articles-per-page">
                 <label for="articulosPorPagina">Artículos por página:</label>
                 <form action="{{ route('myArticles') }}" method="GET" id="paginationForm">

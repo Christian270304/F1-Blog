@@ -12,16 +12,36 @@ class ArticleController extends Controller
 
     public function showAnonymous(Request $request)
     {
+        $order = $request->get('order', 'ASC');
+        $search = $request->input('search');
+
         $perPage = $request->input('perPage', 5);
-        $articles = Article::select('id','titol', 'cos', 'image', 'user_id')->paginate($perPage);
+        $query = Article::select('id','titol', 'cos', 'image', 'user_id')->orderBy('titol', $order);
+
+        if (!empty($search)) {
+            $query->where('titol', 'LIKE', '%' . $search . '%')
+                  ->orWhere('cos', 'LIKE', '%' . $search . '%');
+        }
+
+        $articles = $query->paginate($perPage);
         $articles->toArray();
-        return view('anonymous', compact('articles'));
+        return view('anonymous', compact('articles', 'order', 'search'));
     }
 
     public function showArticles(Request $request)
     {
+        $order = $request->get('order', 'ASC');
+        $search = $request->input('search');
+
         $perPage = $request->input('perPage', 5);
-        $articles = Article::select('id','titol', 'cos', 'image', 'user_id')->paginate($perPage);
+        $query = Article::select('id','titol', 'cos', 'image', 'user_id')->orderBy('titol', $order);
+
+        if (!empty($search)) {
+            $query->where('titol', 'LIKE', '%' . $search . '%')
+                  ->orWhere('cos', 'LIKE', '%' . $search . '%');
+        }
+
+        $articles = $query->paginate($perPage);
         // Transformar los datos de los artículos
         $articles->getCollection()->transform(function ($article) {
             return [
@@ -35,17 +55,25 @@ class ArticleController extends Controller
             ];
         });
     
-        return view('articles', compact('articles'));
+        return view('articles', compact('articles', 'order', 'search'));
     }
 
     public function showMyArticles(Request $request)
     {
         $order = $request->get('order', 'ASC');
+        $search = $request->input('search');
 
         $userId = Auth::id();
         $perPage = $request->input('perPage', 5);
-        $articles = Article::where('user_id', $userId)->orderBy('titol', $order)->paginate($perPage);
-        return view('myArticles' , compact('articles', 'order'));
+        $query = Article::where('user_id', $userId)->orderBy('titol', $order);
+
+        if (!empty($search)) {
+            $query->where('titol', 'LIKE', '%' . $search . '%')
+                  ->orWhere('cos', 'LIKE', '%' . $search . '%');
+        }
+
+        $articles = $query->paginate($perPage);
+        return view('myArticles' , compact('articles', 'order', 'search'));
     }
 
     public function showNewArticle()

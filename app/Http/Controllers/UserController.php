@@ -15,6 +15,7 @@ class UserController extends Controller
             'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'bio' => 'nullable|string|max:255',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = $request->user();
@@ -31,6 +32,11 @@ class UserController extends Controller
             'email' => 'unique:users,email',
             ]);
             $user->email = $request->email;
+        }
+
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('upload/avatar', 'public');
+            $user->image = $path;
         }
 
         $user->bio = $request->bio;

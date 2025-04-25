@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/css/articles.css'])
+    <link rel="stylesheet" href="{{ asset('css/articles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>Articles</title>
 </head>
@@ -29,7 +29,11 @@
     
             
                 <div class="search-bar">
-                    <input type="text" name="search" id="search" placeholder="Buscar por título o contenido" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                    <form action="{{ route('articles') }}" method="GET">
+                        <input type="text" name="search" id="search" placeholder="Buscar por título o contenido" value="{{ request('search') }}">
+                        <input type="hidden" name="order" value="{{ request('order', 'ASC') }}">
+                        <input type="hidden" name="perPage" value="{{ request('perPage', 5) }}">
+                    </form>
                 </div>
                 <div class="articles-per-page">
                     <label for="articulosPorPagina">Artículos por página:</label>
@@ -38,9 +42,16 @@
                     </form>
                 </div>
                 <div class="sort-buttons">
-                    <button type="submit" name="order" value="ASC" >A-Z</button>
-                    <button type="submit" name="order" value="DESC"  >Z-A</button>
-
+                    <form action="{{ route('articles') }}" method="GET">
+                        <input type="hidden" name="order" value="ASC">
+                        <input type="hidden" name="perPage" value="{{ request('perPage', 5) }}">
+                        <button type="submit" class="{{ request('order') === 'ASC' ? 'active' : '' }}">A-Z</button>
+                    </form>
+                    <form action="{{ route('articles') }}" method="GET">
+                        <input type="hidden" name="order" value="DESC">
+                        <input type="hidden" name="perPage" value="{{ request('perPage', 5) }}">
+                        <button type="submit" class="{{ request('order') === 'DESC' ? 'active' : '' }}">Z-A</button>
+                    </form>
                 </div>
                 <div class="user-icon">
                     <label  for ="dropdown">
